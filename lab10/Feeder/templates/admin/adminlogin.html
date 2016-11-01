@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Admin Login
+	</title>
+</head>
+<body>
+	<h1> Admin Login </h1>
+	{% if form.errors %}
+		<p>Your admin username and password credentials didn't match. Please try again.</p>
+	{% endif %}
+
+	{% if next %}
+	    {% if user.is_authenticated %}
+			<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+	    {% else %}
+			<p>Please login to see this page.</p>
+	    {% endif %}
+	{% endif %}
+
+	<form method="post" action=".">{% csrf_token %}
+		<table>
+			{{ form.as_p}}
+		</table>
+		<input type="submit" value="Submit" />
+	</form>
+	<a href="/">Home</a>
+</body>
+</html>

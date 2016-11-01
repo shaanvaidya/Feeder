@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome!</title>
+</head>
+<body>
+	<h1>You have successfully logged in!</h1>
+	<form method="post" action=".">{% csrf_token %}
+		{{ form.as_p}}
+		<input type="submit" value="Add Deadline">
+	</form>
+	{% if deadlines %}
+		<ul>
+		{% for deadline in deadlines %}
+			<li> {{deadline.course.code}} {{deadline.topic}} {{deadline.due_date}} </li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	<a href="/logout"> Logout </a>
+</body>
+</html>

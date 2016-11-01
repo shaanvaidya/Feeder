@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Login or Sign Up
+	</title>
+</head>
+<body>
+	<h1> Login </h1>
+	{% if form.errors %}
+		<p>Your username and password didn't match. Please try again.</p>
+	{% endif %}
+
+	{% if next %}
+	    {% if user.is_authenticated %}
+			<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+	    {% else %}
+			<p>Please login to see this page.</p>
+	    {% endif %}
+	{% endif %}
+
+	<form method="post" action="."> {% csrf_token %}
+		<input type="text" placeholder="username" name="username">
+		<input type="password" placeholder="password" name="password">
+		<button type="submit" value="login">Submit</button>
+		<input type="hidden" name="next" value="/" />
+	</form>
+	<a href="/register/">Register</a>
+	<a href="/adminlogin/">Admin Login</a>
+</body>
+</html>

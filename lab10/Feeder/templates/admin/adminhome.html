@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome Admin!</title>
+</head>
+<body>
+	<form method="post" action=".">{% csrf_token %}
+		<table>
+			{{ form.as_p}}
+		</table>
+		<input type="submit" value="Add Course" name="action">	
+	</form>
+	{% if courses %}
+		<ul>
+		{% for course in courses %}
+			<li> {{course.code}} {{course.name}} </li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+
+	<form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+		<table>
+			{{ formupload.as_p }}
+		</table>
+		<input type="submit" value="Upload" name="action">		
+	</form>
+	<a href='/adminlogout'> Logout </a>
+</body>
+</html>
