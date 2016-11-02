@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title>Welcome!</title>
@@ -18,5 +18,55 @@
 	{% endif %}
 	<a href="/createfeedbackform"> Create Feedback Form </a>
 	<a href="/logout"> Logout </a>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<title>Welcome!</title>
+</head>
+<body>
+	<div class="container">
+			<div class='page-header'>
+				<h1 align="center">Welcome!</h1>
+			</div>
+			<div class="container" >
+				<a href="/createfeedbackform" class="btn btn-info" role="button" align="left">Create Feedback Form</a>
+				<a href="/logout" class="btn btn-info" role="button" align="right">Logout</a>
+			</div>
+			<div class="container">
+				<div class="jumbotron">
+					<p>Add Deadline</p>
+					<form method="post" action=".">{% csrf_token %}
+						<table class="table table-hover">
+							{{ form.as_table }}
+						</table>
+						<input type="submit" value="Add Deadline">
+						<!---<button class="btn btn-primary" type="submit" value="Add Deadline">Add Deadline</button>
+					-->
+					</form>
+				</div>
+			</div>
+			
+			<div class="container">
+				<div class="jumbotron">
+					{% if deadlines %}
+						<ul>
+						<p>Upcoming Deadlines</p>
+						{% for deadline in deadlines %}
+							<li> {{deadline.course.code}} {{deadline.topic}} {{deadline.due_date}} </li>
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			</div>
+	</div>
 </body>
 </html>

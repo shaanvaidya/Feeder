@@ -1,25 +1,76 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title>Create Feedback Form</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		count = Number($("[name=added_field_count]").val());
+		
+		$("#add_field").onclick(function(){
+			count++;
+			newfield = $('<input type="text"/>');
+			newfield.attr('name', 'added_field_'+ count);
+			$("#myform").append(newfield);
+			$("[name=added_field_count]").val(count);
+		})
+	</script>
+</head>
+<body>
+	<form method=post action="." enctype="multipart/form-data">{% csrf_token %}
+		<div id="myform">
+		<table>
+			{{form.as_p}}
+		</table>
+		</div>
+		<button id="add_field">Add Question</button>
+		<input type="submit" name="Submit" value="Submit">
+	</form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<title>Create Feedback Form</title>
+
 	<script type="text/javascript">
 		count = Number($("[name=added_field_count]").val());
 		$("#add_field").click(function(){
 			count++;
 			newfield = $('<input type="text">');
 			newfield.attr('name', 'added_field_'+count);
-			$("#forms").append(newfield);
+			$("#myform").append(newfield);
 			$("[name=added_field_count]").val(count);
 		})
 	</script>
+
 </head>
 <body>
-	<form method=post action=".">{% csrf_token %}
-		<table>
-			{{form.as_p}}
-		</table>
-		<button id="add_field">Add Question</button>
-		<input type="submit" name="Submit" value="Submit">
-	</form>
+	<div class="container">
+		<div class="page-header">
+			<ul class="nav nav-pills">
+				<li class="active"><a data-toggle="pills" href="/logout/" >Logout</a></li>
+				<li><a data-toggle="pills" href="/">Back</a></li>
+			</ul>
+		</div>
+			<form method=post action=".">{% csrf_token %}
+				<div class="jumbotron">
+				<div id="myform">
+					<table class="table table-hover">
+						{{form.as_table}}
+					</table>
+					<button id="add_field" class="btn btn-primary">Add Question</button>
+					<button class="btn btn-primary" name="Submit" type="submit" value="Submit">Submit</button>
+				</div>
+				</div>
+			</form>
+	
+	</div>
 </body>
 </html>

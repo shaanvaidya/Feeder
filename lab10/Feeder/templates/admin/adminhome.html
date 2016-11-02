@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title>Welcome Admin!</title>
@@ -43,5 +43,81 @@
 		{% endfor %}
 	</ul>
 	<a href='/adminlogout'> Logout </a>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<title>Welcome Admin!</title>
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">	
+			<h1 align="center">Welcome Admin!</h1>
+		</div>
+		<div class="container" align="right">
+			<a href="/adminlogout" class="btn btn-info" role="button" align="right">Logout</a>
+		</div>
+		<div class="container">
+			<div class="jumbotron">
+				<p>Add Courses</p>
+				<form method="post" action=".">{% csrf_token %}
+					<table class="table table-hover">
+						{{ form.as_table}}
+					</table>
+					<input type="submit" value="Add Course" name="action">	
+				</form>
+			</div>
+		</div>
+		<div class="container">
+			<div class="jumbotron">
+				<p>Existing Courses</p>
+				{% if courses %}
+					<ul>
+					{% for course in courses %}
+						<li> {{course.code}} {{course.name}} </li>
+					{% endfor %}
+					</ul>
+				{% endif %}
+			</div>
+		</div>
+		<div class="container">
+			<div class="jumbotron">
+				<p>Add Students</p>
+				<form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+					<table>
+						{{ formupload.as_p }}
+					</table>
+					<input type="submit" value="Upload" name="action">		
+				</form>
+			</div>
+		</div>
+<!--
+			<ul>
+				{% for course in courses %}
+					<li>
+					<ul>
+						{% for feedback in course.feedback_set.all %}
+							<li>
+							<ul>	
+								{% for ques in feedback.question_set.all %}
+									<li> {{ques.q}}</li>
+								{% endfor %}
+							</ul>
+							</li>
+						{% endfor %}
+					</ul>
+					</li>
+				{% endfor %}
+			</ul>
+-->
+			
 </body>
 </html>

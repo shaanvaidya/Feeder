@@ -26,14 +26,19 @@ def home(request):
 def createfeedbackform(request):
 	if request.method == 'POST':
 		form = CreateFeedbackForm(request.POST, added=request.POST.get('added_field_count'))
+		added = request.POST.get('added_field_count')
 		if form.is_valid():
-			feedback = Feedback(
-				course = request.POST['course'],
-				topic = request.POST['topic'],
-				due_date = request.POST['due_date']
-			)
+			# feedback = Feedback(
+			# 	course = request.POST['course'],
+			# 	topic = request.POST['topic'],
+			# 	due_date = request.POST['due_date']
+			# )
+			feedback = form.save(commit=True)
 			feedback.save()
-			for i in range(int(extra)):
+			ques = Question(q=request.POST['original_field'], feedback=feedback)
+			ques.save()
+			# feedback.save()
+			for i in range(int(added)):
 				ques = Question(q=request.POST['added_field_{i}'.format(i=i)], feedback=feedback)
 				ques.save()
 			return HttpResponseRedirect('/createfeedbackform')
@@ -91,27 +96,28 @@ def adminhome(request):
 		if request.method == 'POST':
 			if request.POST['action'] == "Add Course":	
 				form = CourseRegister(request.POST, request.FILES)
-				course = form.save(commit = True)
-				midsem_deadline = Deadline(due_date=course.midsem_date, topic="Midsemester Examination", course=course)
-				midsem_deadline.save()
-				endsem_deadline = Deadline(due_date=course.endsem_date, topic="Endsemester Examination", course=course)
-				endsem_deadline.save()
-				question1 = "The course content was intelectually stimulating"
-				question2 = "Textbooks and/or other references were easily available"
-				midsem_feedback = Feedback(course=course, due_date=course.midsem_date, topic="Midsem Feedback")
-				endsem_feedback = Feedback(course=course, due_date=course.endsem_date, topic="Endsem Feedback")
-				midsem_feedback.save()
-				endsem_feedback.save()
-				ques = Question(q=question1, feedback=midsem_feedback)
-				ques.save()
-				ques = Question(q=question2, feedback=midsem_feedback)
-				ques.save()
-				ques = Question(q=question1, feedback=endsem_feedback)
-				ques.save()
-				ques = Question(q=question2, feedback=endsem_feedback)
-				ques.save()
-				course.save()
-				return HttpResponseRedirect('/adminhome')
+				if form.is_valid():
+					course = form.save(commit = True)
+					midsem_deadline = Deadline(due_date=course.midsem_date, topic="Midsemester Examination", course=course)
+					midsem_deadline.save()
+					endsem_deadline = Deadline(due_date=course.endsem_date, topic="Endsemester Examination", course=course)
+					endsem_deadline.save()
+					question1 = "The course content was intelectually stimulating"
+					question2 = "Textbooks and/or other references were easily available"
+					midsem_feedback = Feedback(course=course, due_date=course.midsem_date, topic="Midsem Feedback")
+					endsem_feedback = Feedback(course=course, due_date=course.endsem_date, topic="Endsem Feedback")
+					midsem_feedback.save()
+					endsem_feedback.save()
+					ques = Question(q=question1, feedback=midsem_feedback)
+					ques.save()
+					ques = Question(q=question2, feedback=midsem_feedback)
+					ques.save()
+					ques = Question(q=question1, feedback=endsem_feedback)
+					ques.save()
+					ques = Question(q=question2, feedback=endsem_feedback)
+					ques.save()
+					course.save()
+					return HttpResponseRedirect('/adminhome')
 			elif request.POST['action'] == "Upload":
 				form = UploadStudentList(request.POST, request.FILES)
 				if form.is_valid():

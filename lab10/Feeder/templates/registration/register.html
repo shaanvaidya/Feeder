@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<title>Register</title>
@@ -11,5 +11,38 @@
 		</table>
 		<input type="submit" value="Register" />
 	</form>
+</body>
+</html> -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<title>Register</title>
+
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">	
+			<ul class="nav nav-pills">
+				<li><a data-toggle="pills" href="/login/" >Login</a></li>
+				<li class="active"><a data-toggle="pills" href="/register/">Register</a></li>
+			</ul>
+		</div>
+		<div class="container">
+			<div class="jumbotron">
+				<form method="post" action=".">{% csrf_token %}
+					<table class="table table-hover">
+						{{ form.as_table}}
+					</table>
+					<button class="btn btn-primary" type="submit" value="Register">Create account</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
