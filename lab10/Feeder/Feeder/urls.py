@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^$', home),
     url(r'^login/', views.login),
     url(r'^logout/', views.logout, {'next_page': '/'}),
+    url(r'^createfeedbackform/', createfeedbackform),
     url(r'^register/', register),
     url(r'^success/', registersuccess),
     url(r'^adminlogin/', adminlogin),

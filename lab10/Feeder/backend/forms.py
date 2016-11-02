@@ -33,6 +33,21 @@ class Register(forms.Form):
 		# except Instructor.DoesNotExist:
 		# 	return self.cleaned_data['username']
 		# raise forms.ValidationError("Username already exists. Try another.")
+class CreateFeedbackForm(forms.ModelForm):
+	class Meta:
+		model = Feedback
+		fields = ['course', 'topic', 'due_date']
+	original_field = forms.CharField(label='Question 1', max_length=50)
+	added_field_count = forms.CharField(widget=forms.HiddenInput())
+	def __init__(self, *args, **kwargs):
+		added_fields = kwargs.pop('added', 0)
+		super(CreateFeedbackForm, self).__init__(*args, **kwargs)
+		self.fields['added_field_count'].initial = added_fields
+		for index in range(int(added_fields)):
+			self.fields['added_field_{index}'.format(index=index)] = \
+				forms.CharField(label='Question {index}'.format(index=index), max_length=50)
+
+
 
 # class StudentRegister(forms.ModelForm):
 # 	class Meta:

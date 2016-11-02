@@ -22,6 +22,25 @@ def home(request):
 		c = {'form':form, 'deadlines':deadlines, 'courses':courses}
 		return render(request, 'home.html', c)
 
+@login_required(login_url="login/")
+def createfeedbackform(request):
+	if request.method == 'POST':
+		form = CreateFeedbackForm(request.POST, added=request.POST.get('added_field_count'))
+		if form.is_valid():
+			feedback = Feedback(
+				course = request.POST['course'],
+				topic = request.POST['topic'],
+				due_date = request.POST['due_date']
+			)
+			feedback.save()
+			for i in range(int(extra)):
+				ques = Question(q=request.POST['added_field_{i}'.format(i=i)], feedback=feedback)
+				ques.save()
+			return HttpResponseRedirect('/createfeedbackform')
+	else:
+		form = CreateFeedbackForm()
+		return render(request, 'createfeedback.html', { 'form': form })
+
 @csrf_protect
 def register(request):
 	if request.method == 'POST':

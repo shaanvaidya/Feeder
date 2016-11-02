@@ -6,7 +6,7 @@
 <body>
 	<h1>You have successfully logged in!</h1>
 	<form method="post" action=".">{% csrf_token %}
-		{{ form.as_p}}
+		{{ form.as_p }}
 		<input type="submit" value="Add Deadline">
 	</form>
 	{% if deadlines %}
@@ -16,6 +16,7 @@
 		{% endfor %}
 		</ul>
 	{% endif %}
+	<a href="/createfeedbackform"> Create Feedback Form </a>
 	<a href="/logout"> Logout </a>
 </body>
 </html>

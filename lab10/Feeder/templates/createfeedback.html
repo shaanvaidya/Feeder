@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create Feedback Form</title>
+	<script type="text/javascript">
+		count = Number($("[name=added_field_count]").val());
+		$("#add_field").click(function(){
+			count++;
+			newfield = $('<input type="text">');
+			newfield.attr('name', 'added_field_'+count);
+			$("#forms").append(newfield);
+			$("[name=added_field_count]").val(count);
+		})
+	</script>
+</head>
+<body>
+	<form method=post action=".">{% csrf_token %}
+		<table>
+			{{form.as_p}}
+		</table>
+		<button id="add_field">Add Question</button>
+		<input type="submit" name="Submit" value="Submit">
+	</form>
+</body>
+</html>
