@@ -24,6 +24,24 @@
 		</table>
 		<input type="submit" value="Upload" name="action">		
 	</form>
+
+	<ul>
+		{% for course in courses %}
+			<li>
+			<ul>
+				{% for feedback in course.feedback_set.all %}
+					<li>
+					<ul>	
+						{% for ques in feedback.question_set.all %}
+							<li> {{ques.q}}</li>
+						{% endfor %}
+					</ul>
+					</li>
+				{% endfor %}
+			</ul>
+			</li>
+		{% endfor %}
+	</ul>
 	<a href='/adminlogout'> Logout </a>
 </body>
 </html>

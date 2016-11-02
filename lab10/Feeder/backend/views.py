@@ -4,7 +4,6 @@ from django.contrib.auth import logout
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponseRedirect
 from backend.forms import *
-from django.template import RequestContext
 from backend.models import *
 from django.contrib import messages
 import csv
@@ -46,26 +45,29 @@ def registersuccess(request):
 	return render(request,'registration/success.html')
 
 def adminlogin(request):
-	if request.method == 'POST':
-		username = request.POST['username']
-		password = request.POST['password']
-		# u = MyAdmin.objects.get(username=username, password=password)
-		if MyAdmin.objects.filter(username=request.POST['username'], password=request.POST['password']).exists():
-			admin = MyAdmin.objects.get(username=request.POST['username'], password=request.POST['password'])
-			admin.logged_in = True
-			admin.save()
-			return HttpResponseRedirect('/adminhome')
+	admin = MyAdmin.objects.get(username="admin")
+	if admin.logged_in == False:
+		if request.method == 'POST':
+			username = request.POST['username']
+			password = request.POST['password']
+			if MyAdmin.objects.filter(username=request.POST['username'], password=request.POST['password']).exists():
+				admin = MyAdmin.objects.get(username=request.POST['username'], password=request.POST['password'])
+				admin.logged_in = True
+				admin.save()
+				return HttpResponseRedirect('/adminhome')
+			else:
+				messages.error(request, "Admin not recognised")
+				return HttpResponseRedirect('/adminhome')			
 		else:
-			messages.error(request, "Admin not recognised")
-			return HttpResponseRedirect('/adminhome')			
+			form = AdminLogin()
+			c = {'form': form}
+			return render(request, 'admin/adminlogin.html', c)
 	else:
-		form = AdminLogin()
-		c = {'form': form}
-		return render(request, 'admin/adminlogin.html', c)
+		return HttpResponseRedirect('/adminhome')			
 
 @csrf_protect
 def adminhome(request):
-	admin = MyAdmin.objects.get(pk=1)
+	admin = MyAdmin.objects.get(username="admin")
 	if admin.logged_in:
 		if request.method == 'POST':
 			if request.POST['action'] == "Add Course":	
@@ -113,7 +115,7 @@ def adminhome(request):
 		return HttpResponseRedirect('/adminlogin')
 
 def adminlogout(request):
-	admin = MyAdmin.objects.get(pk=1)
+	admin = MyAdmin.objects.get(username="admin")
 	if admin.logged_in:
 		admin.logged_in = False
 		admin.save()

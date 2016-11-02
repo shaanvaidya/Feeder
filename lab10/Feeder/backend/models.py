@@ -31,9 +31,6 @@ class Student(models.Model):
 	LDAP = models.IntegerField(null=True)
 	password = models.CharField(max_length=30)
 	name = models.CharField(max_length=50)
-
-	# last_name = models.CharField(max_length=30)
-	# email = models.EmailField()
 	course = models.ManyToManyField(Course)
 	def __str__(self):
 		return self.LDAP
@@ -41,7 +38,7 @@ class Student(models.Model):
 class Deadline(models.Model):
 	due_date = models.DateTimeField()
 	topic = models.CharField(max_length=30)
-	description = models.TextField()
+	description = models.TextField(default="")
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 
 class Feedback(models.Model):
