@@ -28,10 +28,11 @@ class Course(models.Model):
 		return self.code
 
 class Student(models.Model):
-	LDAP = models.IntegerField(null=True)
+	LDAP = models.CharField(null=True, max_length=9)
 	password = models.CharField(max_length=30)
 	name = models.CharField(max_length=50)
-	course = models.ManyToManyField(Course)
+	course = models.ManyToManyField(Course )
+	logged_in = models.BooleanField(default=False)
 	def __str__(self):
 		return self.LDAP
 

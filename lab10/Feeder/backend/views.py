@@ -7,6 +7,10 @@ from backend.forms import *
 from backend.models import *
 from django.contrib import messages
 import csv
+from rest_framework.decorators import api_view
+from django.http import JsonResponse
+
+secretkey = "MeraNaamJoker"
 
 @login_required(login_url="login/")
 def home(request):
@@ -145,3 +149,23 @@ def adminlogout(request):
 		admin.logged_in = False
 		admin.save()
 	return HttpResponseRedirect('/adminlogin')
+
+@api_view(['POST'])
+def studentlogin(request):
+	secret = request.data['secretkey']
+	LDAP = request.data['LDAP']
+	password = request.data['password']
+	if secret != secretkey:
+		return JsonResponse({'status':"Not Authorised"})
+	else:
+		try:
+			student = Student.objects.get(LDAP=LDAP)
+		except Student.DoesNotExist:
+			return JsonResponse({'status':"Invalid LDAP id"})
+		if password != student.password:
+			return JsonResponse({'status':'Incorrect Password'})
+		else:
+			student.logged_in = True
+			student.save()
+			name = student.name
+			return JsonResponse({'status':"Successfully logged in", 'name':name, 'logged_in':student.logged_in})
