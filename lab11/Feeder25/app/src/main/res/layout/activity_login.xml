@@ -10,44 +10,44 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.abhishek.feeder25.LoginActivity">
 
-    <Button
-        android:text="Login"
+
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/Login"
-        android:layout_marginTop="200dp"
+        android:inputType="textPersonName"
+        android:ems="10"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:layout_marginBottom="88dp"
-        android:id="@+id/PassWord"
-        android:layout_alignBottom="@+id/Login"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="Password" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
+        android:layout_marginTop="44dp"
         android:id="@+id/UserName"
-        android:layout_above="@+id/PassWord"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="29dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:hint="Username" />
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:layout_below="@+id/UserName"
+        android:layout_alignRight="@+id/UserName"
+        android:layout_alignEnd="@+id/UserName"
+        android:layout_marginTop="41dp"
+        android:id="@+id/PassWord"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Password" />
+
+    <Button
+        android:text="Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/PassWord"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="61dp"
+        android:id="@+id/Login"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>
