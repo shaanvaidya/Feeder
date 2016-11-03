@@ -9,6 +9,8 @@ from django.contrib import messages
 import csv
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
+from django.http import HttpResponse
+
 
 secretkey = "MeraNaamJoker"
 
@@ -152,20 +154,24 @@ def adminlogout(request):
 
 @api_view(['POST'])
 def studentlogin(request):
-	secret = request.data['secretkey']
+	# secret = request.data['secretkey']
 	LDAP = request.data['LDAP']
 	password = request.data['password']
-	if secret != secretkey:
-		return JsonResponse({'status':"Not Authorised"})
+	# if secret != secretkey:
+	# 	return JsonResponse({'status':"Not Authorised"})
+	# else:
+	try:
+		student = Student.objects.get(LDAP=LDAP)
+	except Student.DoesNotExist:
+		return HttpResponse(status=201)
+		# return JsonResponse({'status':"Invalid LDAP id"})
+	if password != student.password:
+		return HttpResponse(status=201)
+		# return JsonResponse({'status':'Incorrect Password'})
 	else:
-		try:
-			student = Student.objects.get(LDAP=LDAP)
-		except Student.DoesNotExist:
-			return JsonResponse({'status':"Invalid LDAP id"})
-		if password != student.password:
-			return JsonResponse({'status':'Incorrect Password'})
-		else:
-			student.logged_in = True
-			student.save()
-			name = student.name
-			return JsonResponse({'status':"Successfully logged in", 'name':name, 'logged_in':student.logged_in})
+		student.logged_in = True
+		student.save()
+		name = student.name
+		return HttpResponse(status=200)
+
+		# return JsonResponse({'status':"Success", 'name':name, 'logged_in':student.logged_in})
