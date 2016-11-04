@@ -3,19 +3,12 @@ from django.contrib.auth.models import User
 from backend.models import *
 import csv
 class Register(forms.Form):
-	# class Meta:
-	# 	model = User
-	# 	fields = ['first_name', 'last_name', 'email', 'username']
-	# password = forms.CharField(label="Password", widget=forms.PasswordInput())
-	# password2 = forms.CharField(label="Re enter Password", widget=forms.PasswordInput())	
 	first_name = forms.CharField(label="First Name", max_length=30)
 	last_name = forms.CharField(label="Last Name", max_length=30)
 	email = forms.EmailField()
 	username = forms.CharField(label="Username", max_length=30)
 	password1 = forms.CharField(label="Password", widget=forms.PasswordInput())
 	password2 = forms.CharField(label="Re enter Password", widget=forms.PasswordInput())
-	# user = User(username=username,password=password,email=email,first_name=first_name,last_name=last_name)
-	# user.save()
 
 	def clean(self):
 		if 'password1' in self.cleaned_data and 'password2' in self.cleaned_data:
@@ -28,32 +21,51 @@ class Register(forms.Form):
 			raise forms.ValidationError("Username already exists. Try another.")
 		return self.cleaned_data['username']
 			
-		# try:
-		# 	user = User.objects.get(username__iexact=self.cleaned_data['username'])
-		# except Instructor.DoesNotExist:
-		# 	return self.cleaned_data['username']
-		# raise forms.ValidationError("Username already exists. Try another.")
 class CreateFeedbackForm(forms.ModelForm):
 	class Meta:
 		model = Feedback
 		fields = ['course', 'topic', 'due_date']
-	original_field = forms.CharField(label='Question 1', max_length=50)
-	added_field_count = forms.CharField(widget=forms.HiddenInput())
 	def __init__(self, *args, **kwargs):
-		added_fields = kwargs.pop('added', 0)
-		if not added_fields:
-			added_fields = 0
 		super(CreateFeedbackForm, self).__init__(*args, **kwargs)
-		self.fields['added_field_count'].initial = added_fields
-		for index in range(int(added_fields)):
-			self.fields['added_field_{index}'.format(index=index)] = \
-				forms.CharField()
-# label='Question {index}'.format(index=index), max_length=50
-# class StudentRegister(forms.ModelForm):
-# 	class Meta:
-# 		model = Student
-# 		fields = ['LDAP_id','password', 'firstname', 'lastname', 'course']
+		self.fields['topic'].widget.attrs={'placeholder': 'Topic'}
+		self.fields['due_date'].widget.attrs={'placeholder': 'DD/MM/YYYY'}
+	question = forms.CharField(max_length=100, label="Question 1", widget=forms.TextInput(attrs={'placeholder': 'Question'}))
+	# count = forms.CharField(widget=forms.HiddenInput())
+	# course = forms.ModelChoiceField(queryset=Course.objects.all(), empty_label=None)
+	# topic = forms.CharField(max_length=30)
+	# due_date = forms.DateTimeField()
+	# def __init__(self, *args, **kwargs):	
+	# 	extra = kwargs.pop('extra',0)
+	# 	if not extra:
+	# 		extra = 0
+	# 	super(CreateFeedbackForm, self).__init__(*args, **kwargs)
+	# 	self.fields['count'].initial = extra
+	# 	for i, question in range(int(extra)):
+	# 		self.fields['question_{}'.format(i + 2)] = \
+	# 			forms.CharField(label="Question {}".format(i+2), max_length=50)
+	# delete = forms.BooleanField(required=False, initial=False)
 
+# class ExtraFields(forms.Form):
+# 	text_field = forms.CharField(max_length=30)
+# 	delete = forms.BooleanField(required=False, initial=False)
+
+####Implementation 1#############################
+	# class Meta:
+	# 	model = Feedback
+	# 	fields = ['course', 'topic', 'due_date']
+	# original_field = forms.CharField(label='Question 1', max_length=50)
+	# added_field_count = forms.CharField(widget=forms.HiddenInput())
+	# def __init__(self, *args, **kwargs):
+	# 	added_fields = kwargs.pop('added', 0)
+	# 	if not added_fields:
+	# 		added_fields = 0
+	# 	super(CreateFeedbackForm, self).__init__(*args, **kwargs)
+	# 	self.fields['added_field_count'].initial = added_fields
+	# 	for index in range(int(added_fields)):
+	# 		self.fields['added_field_{index}'.format(index=index)] = \
+	# 			forms.CharField()
+# label='Question {index}'.format(index=index), max_length=50
+####################################################
 class AdminLogin(forms.Form):
 	username = forms.CharField(label="Username", max_length=30)
 	password = forms.CharField(label="Password", max_length=30, widget=forms.PasswordInput())
@@ -74,6 +86,7 @@ class DeadlineForm(forms.ModelForm):
 
 class UploadStudentList(forms.Form):
 	file = forms.FileField()
+	
 	# def clean(self):
 	# 	file = self.cleaned_data['file']
 	# 	data = csv.reader(file)
@@ -100,3 +113,21 @@ class UploadStudentList(forms.Form):
     #     required=False,
     #     label=""
     # )
+
+	# class Meta:
+	# 	model = User
+	# 	fields = ['first_name', 'last_name', 'email', 'username']
+	# password = forms.CharField(label="Password", widget=forms.PasswordInput())
+	# password2 = forms.CharField(label="Re enter Password", widget=forms.PasswordInput())	
+	# user = User(username=username,password=password,email=email,first_name=first_name,last_name=last_name)
+	# user.save()
+		
+		# try:
+		# 	user = User.objects.get(username__iexact=self.cleaned_data['username'])
+		# except Instructor.DoesNotExist:
+		# 	return self.cleaned_data['username']
+		# raise forms.ValidationError("Username already exists. Try another.")
+# class StudentRegister(forms.ModelForm):
+# 	class Meta:
+# 		model = Student
+# 		fields = ['LDAP_id','password', 'firstname', 'lastname', 'course']

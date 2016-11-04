@@ -10,7 +10,7 @@ import csv
 from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.http import HttpResponse
-
+from django.core import serializers
 
 secretkey = "MeraNaamJoker"
 
@@ -18,39 +18,69 @@ secretkey = "MeraNaamJoker"
 def home(request):
 	if request.method == 'POST':
 		form = DeadlineForm(request.POST, request.FILES)
-		deadline = form.save(commit=True)
-		deadline.save()
-		return HttpResponseRedirect('/')
+		if form.is_valid():
+			deadline = form.save(commit=False)
+			deadline.save()
+			return HttpResponseRedirect('/')
 	else:
 		form = DeadlineForm()
-		deadlines = Deadline.objects.all()
-		courses = Course.objects.all()
-		c = {'form':form, 'deadlines':deadlines, 'courses':courses}
-		return render(request, 'home.html', c)
+	deadlines = Deadline.objects.all()
+	courses = Course.objects.all()
+	c = {'form':form, 'deadlines':deadlines, 'courses':courses}
+	return render(request, 'home.html', c)
 
 @login_required(login_url="login/")
 def createfeedbackform(request):
 	if request.method == 'POST':
-		form = CreateFeedbackForm(request.POST, added=request.POST.get('added_field_count'))
-		added = request.POST.get('added_field_count')
+		form = CreateFeedbackForm(request.POST)
+		countrating = request.POST.get('countrating')
+		countsubjective = request.POST.get('countsubjective')
 		if form.is_valid():
+
 			# feedback = Feedback(
-			# 	course = request.POST['course'],
+			# 	course = Course.objects.get(id=request.POST['course']),
 			# 	topic = request.POST['topic'],
-			# 	due_date = request.POST['due_date']
-			# )
+			# 	due_date = request.POST['due_date'],
+			# )	
 			feedback = form.save(commit=True)
 			feedback.save()
-			ques = Question(q=request.POST['original_field'], feedback=feedback)
-			ques.save()
-			# feedback.save()
-			for i in range(int(added)):
-				ques = Question(q=request.POST['added_field_{i}'.format(i=i)], feedback=feedback)
-				ques.save()
+			question = RatingQuestion(q=request.POST['question'], feedback=feedback)
+			question.save()
+			for i in range(int(countrating)):
+				question = RatingQuestion(q=request.POST['question_{}'.format(i+2)], feedback=feedback)
+				question.save()
+			for i in range(int(countsubjective)):
+				question = SubjectiveQuestion(q=request.POST['question_{}'.format(i+2)], feedback=feedback)
+				question.save()
 			return HttpResponseRedirect('/createfeedbackform')
 	else:
 		form = CreateFeedbackForm()
-		return render(request, 'createfeedback.html', { 'form': form })
+	return render(request, 'createfeedback.html', {'form':form})
+
+#########Implementation 1#################################
+# def createfeedbackform(request):
+# 	if request.method == 'POST':
+# 		form = CreateFeedbackForm(request.POST, added=request.POST.get('added_field_count'))
+# 		added = request.POST.get('added_field_count')
+# 		if form.is_valid():
+# 			# feedback = Feedback(
+# 			# 	course = request.POST['course'],
+# 			# 	topic = request.POST['topic'],
+# 			# 	due_date = request.POST['due_date']
+# 			# )
+# 			feedback = form.save(commit=True)
+# 			feedback.save()
+# 			ques = Question(q=request.POST['original_field'], feedback=feedback)
+# 			ques.save()
+# 			# feedback.save()
+# 			for i in range(int(added)):
+# 				ques = Question(q=request.POST['added_field_{i}'.format(i=i)], feedback=feedback)
+# 				ques.save()
+# 			return HttpResponseRedirect('/createfeedbackform')
+# 	else:
+# 		form = CreateFeedbackForm()
+# 		return render(request, 'createfeedback.html', { 'form': form })
+#########################################################################
 
 @csrf_protect
 def register(request):
@@ -162,6 +192,7 @@ def studentlogin(request):
 	# else:
 	try:
 		student = Student.objects.get(LDAP=LDAP)
+		x = serializers.serialize('json', [student, ])
 	except Student.DoesNotExist:
 		return HttpResponse(status=201)
 		# return JsonResponse({'status':"Invalid LDAP id"})
@@ -172,6 +203,49 @@ def studentlogin(request):
 		student.logged_in = True
 		student.save()
 		name = student.name
-		return HttpResponse(status=200)
+		return HttpResponse(x)
 
 		# return JsonResponse({'status':"Success", 'name':name, 'logged_in':student.logged_in})
+# @api_view(['POST'])
+# def studentlogout(request):
+# 	LDAP = request.data['LDAP']
+# 	try:
+# 		student = Student.objects.get(LDAP=LDAP)
+# 	except Student.DoesNotExist:
+# 		return HttpResponse(status=400)
+
+
+################Implementation 2#####################
+# def createfeedbackform(request):
+# 	if request.method == 'POST':
+# 		if request.POST['action'] == "+":
+# 			extra = int(float(request.POST['extra'])) + 1
+# 			form = CreateFeedbackForm(initial=request.POST)
+# 			extrafields= formset_factory(ExtraFields, extra=extra)
+# 		else:
+# 			extra = int(float(request.POST['extra']))
+# 			form = CreateFeedbackForm(request.POST)
+# 			extrafields = formset_factory(ExtraFields, extra=extra)(request.POST)
+
+# 			if form.is_valid() and extrafield.is_valid():
+# 				if request.POST['action'] == "Create":
+# 					for extrafield in extrafields:
+# 						if not extrafield.cleaned_data['delete']:
+# 						    # create data
+# 				elif request.POST['action'] == "Edit":
+# 					for extrafield in extrafields:
+# 						if extrafield.cleaned_data['delete']:
+#     						# delete data
+# 						else:
+#     						# create data
+# 				return HttpResponseRedirect('abm_usuarios')
+#     else:
+# 		form = SpecificForm()
+# 		extra = 1
+# 		formset = formset_factory(FormsetForm, extra=extra)
+
+# 		template = loader.get_template('some_template.html')
+# 		context = RequestContext(request, {
+# 		   # some context
+# 		})
+# 		return HttpResponse(template.render(context))

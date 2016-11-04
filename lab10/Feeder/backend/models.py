@@ -47,8 +47,8 @@ class Feedback(models.Model):
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	due_date = models.DateTimeField()
 
-class Question(models.Model):
-	q = models.CharField(max_length=50)
+class RatingQuestion(models.Model):
+	q = models.CharField(max_length=100)
 	ratings = (
 		(1, "Strongly Agree"),
 		(2, 'Agree'),
@@ -57,6 +57,10 @@ class Question(models.Model):
 		(5, "Strongly Disagree"),
 	)
 	opinion = models.IntegerField(choices=ratings, default=1)
+	feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE)
+
+class SubjectiveQuestion(models.Model):
+	q = models.CharField(max_length=100)
 	feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE)
 
 # class FeedbackForm(forms.Form):

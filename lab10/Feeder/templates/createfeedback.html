@@ -40,13 +40,25 @@
 	<title>Create Feedback Form</title>
 
 	<script type="text/javascript">
-		count = Number($("[name=added_field_count]").val());
-		$("#add_field").click(function(){
-			count++;
-			newfield = $('<input type="text">');
-			newfield.attr('name', 'added_field_'+count);
-			$("#myform").append(newfield);
-			$("[name=added_field_count]").val(count);
+		$(document).ready(function(){
+			var countrating = 0;
+			var countsubjective = 0;
+			$(".addrating").click(function(e){
+				e.preventDefault();
+				// var div = document.createElement()
+				countrating = countrating + 1;
+				var newfield = '<div class="form-group"><table class="table"><label for="text">Rating Question ' +countrating+ '</label><input type="text" name="question_'+(countrating+1)+'" placeholder="Question" max_length=100></table></div>';
+				$("#myform").after(newfield);
+				$("#countrating").val(countrating);
+			})
+			$(".addsubjective").click(function(e){
+				e.preventDefault();
+				// var div = document.createElement()
+				countsubjective = countsubjective + 1;
+				var newfield = '<div class="form-group"><table class="table"><label for="text">Subjective Question '+countsubjective+'</label><input type="text" name="question_'+(countsubjective+1)+'" placeholder="Question" max_length=100></table></div>';
+				$("#myform").after(newfield);
+				$("#countsubjective").val(countsubjective);
+			})
 		})
 	</script>
 
@@ -59,18 +71,48 @@
 				<li><a data-toggle="pills" href="/">Back</a></li>
 			</ul>
 		</div>
-			<form method=post action=".">{% csrf_token %}
-				<div class="jumbotron">
-				<div id="myform">
+			<form method="POST" action=".">{% csrf_token %}
+				<input type="hidden" name="countrating" value = 0 id = "count" value="">
+				<input type="hidden" name="countsubjective" value = 0 id = "count" value="">
+				<div class="jumbotron">`						
+					<div id="myform">
 					<table class="table table-hover">
 						{{form.as_table}}
 					</table>
-					<button id="add_field" class="btn btn-primary">Add Question</button>
+					</div>
+				</div>
+					<button class="btn btn-primary addrating" >Add Rating Question</button>
+					<button class="btn btn-primary addsubjective" >Add Subjective Question</button>
 					<button class="btn btn-primary" name="Submit" type="submit" value="Submit">Submit</button>
-				</div>
-				</div>
 			</form>
 	
 	</div>
 </body>
 </html>
+
+
+
+
+<!-- 
+// varcount = 0;
+		// function addfield(){
+		// 	// count = Number($("[name=count]").val());
+		// 	// count = $("#count").val();
+		// 	count++;
+		// 	newfield = $('<input type="text">');
+		// 	countemp = count+1
+		// 	newfield.attr('name', 'question_'+(countemp));
+		// 	$("#myform").append(newfield);
+		// 	$("name=count").val(count);
+		// }
+		var count = 0;
+		function addfield(){
+			var y = document.createElement("INPUT");
+			// count = Number($("[name=count]").val())
+			count++;
+			y.setAttribute("type", "text");
+			y.setAttribute("name", "question_" + (count+1))
+			document.getElementById("myform").appendChild(y)
+			document.getElementById("count").value = count
+			// $("[name=count]").val(count);
+		} -->

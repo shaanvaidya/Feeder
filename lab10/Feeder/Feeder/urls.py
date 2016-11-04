@@ -29,6 +29,8 @@ urlpatterns = [
     url(r'^adminlogin/', adminlogin),
     url(r'^adminhome/', adminhome),
     url(r'^adminlogout/', adminlogout),
-    url(r'^studentlogin/', studentlogin)
+    url(r'^studentlogin/', studentlogin),
+    # url(r'^viewfeedback/', viewfeedback),
+    # url(r'^studentlogout/', studentlogout)
     # url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

@@ -68,7 +68,7 @@
 		<div class="container">
 			<div class="jumbotron">
 				<p>Add Courses</p>
-				<form method="post" action=".">{% csrf_token %}
+				<form method="POST" action=".">{% csrf_token %}
 					<table class="table table-hover">
 						{{ form.as_table}}
 					</table>
@@ -91,7 +91,7 @@
 		<div class="container">
 			<div class="jumbotron">
 				<p>Add Students</p>
-				<form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+				<form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 					<table>
 						{{ formupload.as_p }}
 					</table>
