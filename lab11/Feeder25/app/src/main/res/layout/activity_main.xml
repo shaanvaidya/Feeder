@@ -21,11 +21,11 @@
         android:inputType="textPersonName"
         android:text="Name"
         android:ems="10"
+        android:layout_marginBottom="55dp"
+        android:id="@+id/NameUser"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="117dp"
-        android:id="@+id/NameUser"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
