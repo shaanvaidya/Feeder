@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'backend',
     'rest_framework',
-    'datetimewidget',
+    # 'datetimewidget',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

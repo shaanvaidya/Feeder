@@ -196,11 +196,9 @@ def studentlogin(request):
 	try:
 		stu = Student.objects.get(LDAP=LDAP)
 		courses = stu.course.all()
-		# student = [stu,]
-		# courses = list(Course.objects.all())
-		# a = serializers.serialize('python', student)
-		# b = serializers.serialize('python', courses)
-		x = CourseSerializer(courses)
+		# x = serializers.serialize(courses)
+		# x = StudentSerializer([stu,], many=True)
+		x = CourseSerializer(courses, many=True)
 		# json_data = json.dumps( {'student':a, 'courses':b }, default=json_serial )
 	except Student.DoesNotExist:
 		return HttpResponse(status=201)
@@ -211,8 +209,7 @@ def studentlogin(request):
 	else:
 		stu.logged_in = True
 		stu.save()
-		return HttpResponse(x, )
-
+		return JsonResponse(x.data, safe=False)
 		# return JsonResponse({'status':"Success", 'name':name, 'logged_in':student.logged_in})
 # @api_view(['POST'])
 # def studentlogout(request):
