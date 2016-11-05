@@ -13,6 +13,7 @@ from django.http import HttpResponse
 from django.core import serializers
 import json
 from .serializers import *
+from datetime import datetime
 # from django.utils import simplejson
 # from itertools import chain
 secretkey = "MeraNaamJoker"
@@ -28,8 +29,17 @@ def home(request):
 	else:
 		form = DeadlineForm()
 	deadlines = Deadline.objects.all()
+	upcoming = []
+	finished = []
+	for deadline in deadlines:
+		if deadline.due_date > datetime.now():
+			upcoming.append(deadline.pk)
+		else:
+			finished.append(deadline.pk)
+	upcomingdeadlines = Deadline.objects.filter(pk__in=upcoming)
+	finisheddeadlines = Deadline.objects.filter(pk__in=finished)
 	courses = Course.objects.all()
-	c = {'form':form, 'deadlines':deadlines, 'courses':courses}
+	c = {'form':form, 'upcomingdeadlines':upcomingdeadlines, 'finisheddeadlines':finisheddeadlines,'courses':courses}
 	return render(request, 'home.html', c)
 
 @login_required(login_url="login/")
@@ -147,13 +157,13 @@ def adminhome(request):
 					endsem_feedback = Feedback(course=course, due_date=course.endsem_date, topic="Endsem Feedback")
 					midsem_feedback.save()
 					endsem_feedback.save()
-					ques = Question(q=question1, feedback=midsem_feedback)
+					ques = RatingQuestion(q=question1, feedback=midsem_feedback)
 					ques.save()
-					ques = Question(q=question2, feedback=midsem_feedback)
+					ques = RatingQuestion(q=question2, feedback=midsem_feedback)
 					ques.save()
-					ques = Question(q=question1, feedback=endsem_feedback)
+					ques = RatingQuestion(q=question1, feedback=endsem_feedback)
 					ques.save()
-					ques = Question(q=question2, feedback=endsem_feedback)
+					ques = RatingQuestion(q=question2, feedback=endsem_feedback)
 					ques.save()
 					course.save()
 					return HttpResponseRedirect('/adminhome')

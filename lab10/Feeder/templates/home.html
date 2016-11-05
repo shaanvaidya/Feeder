@@ -56,17 +56,29 @@
 				</div>
 			</div>
 			
+			<div class="col-sm4">
 			<div class="container">
 				<div class="jumbotron">
-					{% if deadlines %}
+					{% if upcomingdeadlines %}
 						<ul>
 						<p>Upcoming Deadlines</p>
-						{% for deadline in deadlines %}
+						{% for deadline in upcomingdeadlines %}
 							<li> {{deadline.course.code}} {{deadline.topic}} {{deadline.due_date}} </li>
 						{% endfor %}
 						</ul>
 					{% endif %}
 				</div>
+				<div class="jumbotron">
+					{% if finisheddeadlines %}
+						<ul>
+						<p>Finished Deadlines</p>
+						{% for deadline in finisheddeadlines %}
+							<li> {{deadline.course.code}} {{deadline.topic}} {{deadline.due_date}} </li>
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			</div>
 			</div>
 	</div>
 </body>

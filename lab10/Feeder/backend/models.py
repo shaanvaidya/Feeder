@@ -33,14 +33,26 @@ class Deadline(models.Model):
 	topic = models.CharField(max_length=30)
 	description = models.TextField(default="")
 	course = models.ForeignKey(Course)
+	class Meta:
+		ordering = ['-due_date',]
 
 class Feedback(models.Model):
 	topic = models.CharField(max_length=30)
 	course = models.ForeignKey(Course, on_delete=models.CASCADE)
 	due_date = models.DateTimeField()
+	def __str__(self):
+		return self.topic
 
 class RatingQuestion(models.Model):
+	q = models.CharField(max_length=100)	
+	feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE)
+
+class SubjectiveQuestion(models.Model):
 	q = models.CharField(max_length=100)
+	feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE)
+
+class RatingQuestionResponse(models.Model):
+	ratingquestion = models.ForeignKey(RatingQuestion, on_delete=models.CASCADE)
 	ratings = (
 		(1, "Strongly Agree"),
 		(2, 'Agree'),
@@ -49,11 +61,11 @@ class RatingQuestion(models.Model):
 		(5, "Strongly Disagree"),
 	)
 	opinion = models.IntegerField(choices=ratings, default=1)
-	feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE)
 
-class SubjectiveQuestion(models.Model):
-	q = models.CharField(max_length=100)
-	feedback = models.ForeignKey(Feedback, on_delete=models.CASCADE)
+class SubjectiveQuestionResponse(models.Model):
+	subjectivequestion = models.ForeignKey(SubjectiveQuestion, on_delete=models.CASCADE)
+	opinion = models.CharField(max_length=100)
+
 
 # class FeedbackForm(forms.Form):
 #     yes_no = forms.ChoiceField(
