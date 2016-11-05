@@ -30,42 +30,7 @@ class CreateFeedbackForm(forms.ModelForm):
 		self.fields['topic'].widget.attrs={'placeholder': 'Topic'}
 		self.fields['due_date'].widget.attrs={'placeholder': 'DD/MM/YYYY'}
 	question = forms.CharField(max_length=100, label="Question 1", widget=forms.TextInput(attrs={'placeholder': 'Question'}))
-	# count = forms.CharField(widget=forms.HiddenInput())
-	# course = forms.ModelChoiceField(queryset=Course.objects.all(), empty_label=None)
-	# topic = forms.CharField(max_length=30)
-	# due_date = forms.DateTimeField()
-	# def __init__(self, *args, **kwargs):	
-	# 	extra = kwargs.pop('extra',0)
-	# 	if not extra:
-	# 		extra = 0
-	# 	super(CreateFeedbackForm, self).__init__(*args, **kwargs)
-	# 	self.fields['count'].initial = extra
-	# 	for i, question in range(int(extra)):
-	# 		self.fields['question_{}'.format(i + 2)] = \
-	# 			forms.CharField(label="Question {}".format(i+2), max_length=50)
-	# delete = forms.BooleanField(required=False, initial=False)
 
-# class ExtraFields(forms.Form):
-# 	text_field = forms.CharField(max_length=30)
-# 	delete = forms.BooleanField(required=False, initial=False)
-
-####Implementation 1#############################
-	# class Meta:
-	# 	model = Feedback
-	# 	fields = ['course', 'topic', 'due_date']
-	# original_field = forms.CharField(label='Question 1', max_length=50)
-	# added_field_count = forms.CharField(widget=forms.HiddenInput())
-	# def __init__(self, *args, **kwargs):
-	# 	added_fields = kwargs.pop('added', 0)
-	# 	if not added_fields:
-	# 		added_fields = 0
-	# 	super(CreateFeedbackForm, self).__init__(*args, **kwargs)
-	# 	self.fields['added_field_count'].initial = added_fields
-	# 	for index in range(int(added_fields)):
-	# 		self.fields['added_field_{index}'.format(index=index)] = \
-	# 			forms.CharField()
-# label='Question {index}'.format(index=index), max_length=50
-####################################################
 class AdminLogin(forms.Form):
 	username = forms.CharField(label="Username", max_length=30)
 	password = forms.CharField(label="Password", max_length=30, widget=forms.PasswordInput())

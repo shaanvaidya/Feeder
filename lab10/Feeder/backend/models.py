@@ -1,14 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# class Instructor(models.Model):
-# 	username = models.CharField(max_length=30, primary_key=True)
-# 	password = models.CharField(max_length=30)
-# 	first_name = models.CharField(max_length=30)
-# 	last_name = models.CharField(max_length=30)
-# 	email = models.EmailField()
-# 	def __str__(self):
-# 		return self.username
 
 class MyAdmin(models.Model):
 	username = models.CharField(max_length=30)
@@ -40,7 +32,7 @@ class Deadline(models.Model):
 	due_date = models.DateTimeField()
 	topic = models.CharField(max_length=30)
 	description = models.TextField(default="")
-	course = models.ForeignKey(Course, on_delete=models.CASCADE)
+	course = models.ForeignKey(Course)
 
 class Feedback(models.Model):
 	topic = models.CharField(max_length=30)
@@ -77,3 +69,11 @@ class SubjectiveQuestion(models.Model):
 #         required=False,
 #         label=""
 #     )
+# class Instructor(models.Model):
+# 	username = models.CharField(max_length=30, primary_key=True)
+# 	password = models.CharField(max_length=30)
+# 	first_name = models.CharField(max_length=30)
+# 	last_name = models.CharField(max_length=30)
+# 	email = models.EmailField()
+# 	def __str__(self):
+# 		return self.username
