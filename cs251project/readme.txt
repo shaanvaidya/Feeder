@@ -23,8 +23,8 @@ password = qwertyuiop
 
 Project Link : https://bitbucket.org/marauders25/feeder
 
-Commit:
-
+Commit:	
+63b6e1d 
 
 Note:
 After one time use, if the app is built again, the app would stop working, so to get around that, uncomment line number 65 in MainActivity.java, build, comment the line
