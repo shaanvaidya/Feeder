@@ -25,7 +25,7 @@ password = qwertyuiop
 Project Link : https://bitbucket.org/marauders25/feeder
 
 Commit:	
-63b6e1d 
+9e871e1 
 
 Requirements:
 rest_framework needs to be installed
