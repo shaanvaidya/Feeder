@@ -30,8 +30,6 @@ Note:
 After one time use, if the app is built again, the app would stop working, so to get around that, uncomment line number 65 in MainActivity.java, build, comment the line
 We have not implemented the 'view feedback' feature, so to test if the feedbacks were added as required, one could use Django's admin page
 
-
-
 Reflection Essay:
 
 It all ends here, one would say, but I would argue that this is in fact a new beginning.
