@@ -53,14 +53,14 @@ class SubjectiveQuestion(models.Model):
 
 class RatingQuestionResponse(models.Model):
 	ratingquestion = models.ForeignKey(RatingQuestion, on_delete=models.CASCADE)
-	ratings = (
+	rating = (
 		(1, "Strongly Agree"),
 		(2, 'Agree'),
 		(3, 'Neutral'),
 		(4, 'Disagree'),
 		(5, "Strongly Disagree"),
 	)
-	opinion = models.IntegerField(choices=ratings, default=1)
+	opinion = models.IntegerField(choices=rating, default=1)
 
 class SubjectiveQuestionResponse(models.Model):
 	subjectivequestion = models.ForeignKey(SubjectiveQuestion, on_delete=models.CASCADE)

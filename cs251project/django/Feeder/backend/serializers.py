@@ -9,12 +9,12 @@ class DeadlineSerializer(serializers.ModelSerializer):
 class RatingQuestionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = RatingQuestion
-		fields = ('q', 'ratings')
+		fields = ('q',)
 
 class SubjectiveQuestionSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = SubjectiveQuestion
-		fields = ('q')
+		fields = ('q',)
 
 class FeedbackSerializer(serializers.ModelSerializer):
 	ratingquestion_set = RatingQuestionSerializer(many=True, read_only=True)
