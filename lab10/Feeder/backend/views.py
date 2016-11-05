@@ -11,7 +11,10 @@ from rest_framework.decorators import api_view
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.core import serializers
-
+import json
+from .serializers import *
+# from django.utils import simplejson
+# from itertools import chain
 secretkey = "MeraNaamJoker"
 
 @login_required(login_url="login/")
@@ -191,19 +194,24 @@ def studentlogin(request):
 	# 	return JsonResponse({'status':"Not Authorised"})
 	# else:
 	try:
-		student = Student.objects.get(LDAP=LDAP)
-		x = serializers.serialize('json', [student, ])
+		stu = Student.objects.get(LDAP=LDAP)
+		courses = stu.course.all()
+		# student = [stu,]
+		# courses = list(Course.objects.all())
+		# a = serializers.serialize('python', student)
+		# b = serializers.serialize('python', courses)
+		x = CourseSerializer(courses)
+		# json_data = json.dumps( {'student':a, 'courses':b }, default=json_serial )
 	except Student.DoesNotExist:
 		return HttpResponse(status=201)
 		# return JsonResponse({'status':"Invalid LDAP id"})
-	if password != student.password:
+	if password != stu.password:
 		return HttpResponse(status=201)
 		# return JsonResponse({'status':'Incorrect Password'})
 	else:
-		student.logged_in = True
-		student.save()
-		name = student.name
-		return HttpResponse(x)
+		stu.logged_in = True
+		stu.save()
+		return HttpResponse(x, )
 
 		# return JsonResponse({'status':"Success", 'name':name, 'logged_in':student.logged_in})
 # @api_view(['POST'])
