@@ -1,0 +1,85 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome!</title>
+</head>
+<body>
+	<h1>You have successfully logged in!</h1>
+	<form method="post" action=".">{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Add Deadline">
+	</form>
+	{% if deadlines %}
+		<ul>
+		{% for deadline in deadlines %}
+			<li> {{deadline.course.code}} {{deadline.topic}} {{deadline.due_date}} </li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+	<a href="/createfeedbackform"> Create Feedback Form </a>
+	<a href="/logout"> Logout </a>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<script src="{% static 'jquery.min.js'%}"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	
+	<title>Welcome!</title>
+</head>
+<body>
+	<div class="container">
+			<div class='page-header'>
+				<h1 align="center">Welcome!</h1>
+			</div>
+			<div class="container" >
+				<a href="/createfeedbackform" class="btn btn-info" role="button" align="left">Create Feedback Form</a>
+				<a href="/logout" class="btn btn-info" role="button" align="right">Logout</a>
+			</div>
+			<div class="container">
+				<div class="jumbotron">
+					<p>Add Deadline</p>
+					<form method="POST" action=".">{% csrf_token %}
+						<!-- {{ form.errors }} {{form.non_field_errors}} -->
+						<table class="table table-hover">
+							{{ form.as_table }}
+						</table>
+						<!-- <input type="submit" value="Add Deadline"> -->
+						-<button class="btn btn-primary" type="submit" value="Add Deadline">Add Deadline</button>
+					
+					</form>
+				</div>
+			</div>
+			
+			<div class="col-sm4">
+			<div class="container">
+				<div class="jumbotron">
+					{% if upcomingdeadlines %}
+						<ul>
+						<p>Upcoming Deadlines</p>
+						{% for deadline in upcomingdeadlines %}
+							<li> {{deadline.course.code}} {{deadline.topic}} {{deadline.due_date}} </li>
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+				<div class="jumbotron">
+					{% if finisheddeadlines %}
+						<ul>
+						<p>Finished Deadlines</p>
+						{% for deadline in finisheddeadlines %}
+							<li> {{deadline.course.code}} {{deadline.topic}} {{deadline.due_date}} </li>
+						{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
+			</div>
+			</div>
+	</div>
+</body>
+</html>

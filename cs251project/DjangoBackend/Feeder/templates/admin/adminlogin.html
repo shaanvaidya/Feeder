@@ -1,0 +1,75 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Admin Login
+	</title>
+</head>
+<body>
+	<h1> Admin Login </h1>
+	{% if form.errors %}
+		<p>Your admin username and password credentials didn't match. Please try again.</p>
+	{% endif %}
+
+	{% if next %}
+	    {% if user.is_authenticated %}
+			<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+	    {% else %}
+			<p>Please login to see this page.</p>
+	    {% endif %}
+	{% endif %}
+
+	<form method="post" action=".">{% csrf_token %}
+		<table>
+			{{ form.as_p}}
+		</table>
+		<input type="submit" value="Submit" />
+	</form>
+	<a href="/">Home</a>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<script src="{% static 'jquery.min.js'%}"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+	
+	<title>
+		Admin Login
+	</title>
+</head>
+<body>
+	<div class="container">
+		<h1> Admin Login </h1>
+		{% if form.errors %}
+			<div class="alert alert-danger">
+				<p>Your admin username and password credentials didn't match. Please try again.</p>
+			</div>
+		{% endif %}
+<!--
+		{% if next %}
+		    {% if user.is_authenticated %}
+				<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+		    {% else %}
+				<p>Please login to see this page.</p>
+		    {% endif %}
+		{% endif %}
+-->		
+		<div class="container">
+			<div class="jumbotron">
+				<form method="POST" action=".">{% csrf_token %}
+					<table class="table table-hover">
+						{{ form.as_p}}
+					</table>
+					<button class="btn btn-primary" type="submit" value="Submit">Login</button>
+				</form>
+			</div>
+		</div>
+		<a href="/" class="btn btn-info" role="button">Home</a>
+	</div>
+</body>
+</html>

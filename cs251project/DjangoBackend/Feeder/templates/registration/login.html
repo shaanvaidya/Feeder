@@ -1,0 +1,174 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Login or Sign Up
+	</title>
+</head>
+<body>
+	<h1> Login </h1>
+	{% if form.errors %}
+		<p>Your username and password didn't match. Please try again.</p>
+	{% endif %}
+
+	{% if next %}
+	    {% if user.is_authenticated %}
+			<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+	    {% else %}
+			<p>Please login to see this page.</p>
+	    {% endif %}
+	{% endif %}
+
+	<form method="post" action="."> {% csrf_token %}
+		<input type="text" placeholder="username" name="username">
+		<input type="password" placeholder="password" name="password">
+		<button type="submit" value="login">Submit</button>
+		<input type="hidden" name="next" value="/" />
+	</form>
+	<a href="/register/">Register</a>
+	<a href="/adminlogin/">Admin Login</a>
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<script src="{% static 'jquery.min.js'%}"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>	
+
+	<title>
+		Login or Sign Up
+	</title>
+	<script type="text/javascript">
+		function statusChangeCallback(response) {
+			console.log('statusChangeCallback');
+			console.log(response);
+			if(response.status === 'connected') {
+				testAPI();
+			}else if(response.status === 'not_authorized') {
+				document.getElementById('status').innerHTML = 'Please log into this app.';
+			}else{
+				document.getElementById('status').innerHTML = 'Please log into Facebook.';
+			}
+		}
+		
+		function checkLoginState() {
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+			});
+		}
+		window.fbAsyncInit = function() { 
+			FB.init({
+				appId      : '696012620556050',
+				// cookies		: true,
+				xfbml      : true,
+				version    : 'v2.8'
+	    	});
+	  	// };
+		    FB.Event.subscribe('auth.login',
+    	    function(response) {
+    	        // window.location.reload();
+    	        top.location.href="http://localhost:8025/";
+    	    }
+    	);
+	  	
+	  	FB.login(function(response) {
+		  // handle the response
+		}, {scope: 'email'});
+
+		// FB.getLoginStatus(function(response) {
+			// statusChangeCallback(response);
+			// window.localtion = "http://localhost:8025/adminlogin";
+			// if(response.session){
+			// 	top.location.href="http://localhost:8025/login/";
+   //          }
+   //          else{
+   //          	top.location.href="http://localhost:8025/adminlogin/";
+   //          }
+		};
+
+		(function(d, s, id){
+			var js, fjs = d.getElementsByTagName(s)[0];
+			if (d.getElementById(id)) {return;}
+			js = d.createElement(s); js.id = id;
+			js.src = "//connect.facebook.net/en_US/sdk.js";
+			fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+
+
+	    function testAPI() {
+			console.log('Welcome!  Fetching your information.... ');
+			id = ""
+			name = ""
+			FB.api('/me', function(response) {
+				console.log(response);
+				id = response.id;
+				name = response.name;
+				// document.getElementById('status').innerHTML =
+				// response.id + response.name + '!';
+			});
+			document.getElementById("username").value = "djangofacebook";
+			document.getElementById("password").value = "asdfghjkl";
+			document.getElementById("login").click();
+	  	}
+
+
+	</script>
+</head>
+<body>
+	<div class = "container">	
+		<div class="page-header">
+			<ul class="nav nav-pills">
+				<li class="active"><a data-toggle="pills" href="/login/" >Login</a></li>
+				<li><a data-toggle="pills" href="/register/">Register</a></li>
+				<!-- <li><a href="/logout" data-toggle="pills" onclick="FB.logout();">Logout From Facebook</a> </li> -->
+			</ul>
+		</div>
+	</div>
+	<div class = "container">
+		<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+			</fb:login-button>
+
+		{% if form.errors %}
+			<div class="alert alert-danger">
+				<p>Your username and password didn't match. Please try again.</p>
+			</div>
+		{% endif %}
+		<!--
+		{% if next %}
+		    {% if user.is_authenticated %}
+				<p>Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
+		    {% else %}
+		    	<div class="alert alert-danger">
+					<p>Please login to see this page.</p>
+		    	</div>
+		    {% endif %}
+		{% endif %}
+		-->
+	</div>
+	<div class = "container">
+		<div class="jumbotron">
+			<form method="POST" action="." > {% csrf_token %}
+				<div class="form-group">
+					<label for="text">Username</label>
+					<input type="text" placeholder="username" name="username" id="username">
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" placeholder="password" name="password" id="password">
+				</div>	
+					<button type="submit" value="login" class="btn btn-primary" id="login" >Login</button>
+					<input type="hidden" name="next" value="/" />
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="container">
+		
+		<a href="/adminlogin/" class="btn btn-info" role="button">Admin Login</a>
+	</div>
+</body>
+</html>
