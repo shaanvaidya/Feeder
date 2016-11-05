@@ -251,12 +251,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onSelectDate(Date date, View view) {
 
-                for(int i=0;i<dead.size();i++)
-                {
-                    if(dead.get(i).due_date.equals(date)){
-                        Button button = new Button()
-                    }
-                }
+//                for(int i=0;i<dead.size();i++)
+//                {
+//                    if(dead.get(i).due_date.equals(date)){
+//                        Button button = new Button()
+//                    }
+//                }
 
             }
 
