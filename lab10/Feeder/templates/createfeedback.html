@@ -27,15 +27,15 @@
 	</form>
 </body>
 </html> -->
-
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+	<script src="{% static 'jquery.min.js'%}"></script>
+	<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
 	<title>Create Feedback Form</title>
 
@@ -47,16 +47,16 @@
 				e.preventDefault();
 				// var div = document.createElement()
 				countrating = countrating + 1;
-				var newfield = '<div class="form-group"><table class="table"><label for="text">Rating Question ' +countrating+ '</label><input type="text" name="question_'+(countrating+1)+'" placeholder="Question" max_length=100></table></div>';
-				$("#myform").after(newfield);
+				var newfield = '<div class="form-group"><table class="table"><label for="text">Rating Question ' +(countrating)+ '</label><input type="text" class="form-control" name="question_'+(countrating)+'" placeholder="Question" max_length=100></table></div>';
+				$("#myform").before(newfield);
 				$("#countrating").val(countrating);
 			})
 			$(".addsubjective").click(function(e){
 				e.preventDefault();
 				// var div = document.createElement()
 				countsubjective = countsubjective + 1;
-				var newfield = '<div class="form-group"><table class="table"><label for="text">Subjective Question '+countsubjective+'</label><input type="text" name="question_'+(countsubjective+1)+'" placeholder="Question" max_length=100></table></div>';
-				$("#myform").after(newfield);
+				var newfield = '<div class="form-group"><table class="table"><label for="text">Subjective Question '+countsubjective+'</label><input type="text" class="form-control" name="question_'+(countsubjective)+'" placeholder="Question" max_length=100></table></div>';
+				$("#myform").before(newfield);
 				$("#countsubjective").val(countsubjective);
 			})
 		})
@@ -74,16 +74,18 @@
 			<form method="POST" action=".">{% csrf_token %}
 				<input type="hidden" name="countrating" value = 0 id = "count" value="">
 				<input type="hidden" name="countsubjective" value = 0 id = "count" value="">
+					<button class="btn btn-primary addrating" >Add Rating Question</button>
+					<button class="btn btn-primary addsubjective" >Add Subjective Question</button>
+					<button class="btn btn-primary" name="Submit" type="submit" value="Submit">Create Form</button>
 				<div class="jumbotron">`						
-					<div id="myform">
+					<div>
 					<table class="table table-hover">
 						{{form.as_table}}
 					</table>
 					</div>
+					<div id="myform">
+					</div>
 				</div>
-					<button class="btn btn-primary addrating" >Add Rating Question</button>
-					<button class="btn btn-primary addsubjective" >Add Subjective Question</button>
-					<button class="btn btn-primary" name="Submit" type="submit" value="Submit">Submit</button>
 			</form>
 	
 	</div>

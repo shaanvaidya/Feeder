@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^adminhome/', adminhome),
     url(r'^adminlogout/', adminlogout),
     url(r'^studentlogin/', studentlogin),
+    # url(r'^facebooklogin/', facebooklogin),
     # url(r'^adminhome/viewcourses/', viewcourses)
     # url(r'^viewfeedback/', viewfeedback),
     # url(r'^studentlogout/', studentlogout)

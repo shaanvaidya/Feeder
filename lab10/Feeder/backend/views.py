@@ -16,14 +16,14 @@ from .serializers import *
 from datetime import datetime
 # from django.utils import simplejson
 # from itertools import chain
-secretkey = "MeraNaamJoker"
+# secretkey = "MeraNaamJoker"
 
 @login_required(login_url="login/")
 def home(request):
 	if request.method == 'POST':
 		form = DeadlineForm(request.POST, request.FILES)
 		if form.is_valid():
-			deadline = form.save(commit=False)
+			deadline = form.save(commit=True)
 			deadline.save()
 			return HttpResponseRedirect('/')
 	else:
@@ -57,13 +57,13 @@ def createfeedbackform(request):
 			# )	
 			feedback = form.save(commit=True)
 			feedback.save()
-			question = RatingQuestion(q=request.POST['question'], feedback=feedback)
-			question.save()
+			# question = RatingQuestion(q=request.POST['question'], feedback=feedback)
+			# question.save()
 			for i in range(int(countrating)):
-				question = RatingQuestion(q=request.POST['question_{}'.format(i+2)], feedback=feedback)
+				question = RatingQuestion(q=request.POST['question_{}'.format(i+1)], feedback=feedback)
 				question.save()
 			for i in range(int(countsubjective)):
-				question = SubjectiveQuestion(q=request.POST['question_{}'.format(i+2)], feedback=feedback)
+				question = SubjectiveQuestion(q=request.POST['question_{}'.format(i+1)], feedback=feedback)
 				question.save()
 			return HttpResponseRedirect('/createfeedbackform')
 	else:
@@ -112,7 +112,7 @@ def register(request):
 	else:
 		form = Register()
 		c = {'form': form}
-		return render(request, 'registration/register.html', c)
+	return render(request, 'registration/register.html', c)
 
 def registersuccess(request):
 	return render(request,'registration/success.html')
@@ -134,7 +134,7 @@ def adminlogin(request):
 		else:
 			form = AdminLogin()
 			c = {'form': form}
-			return render(request, 'admin/adminlogin.html', c)
+		return render(request, 'admin/adminlogin.html', c)
 	else:
 		return HttpResponseRedirect('/adminhome')			
 
@@ -143,7 +143,7 @@ def adminhome(request):
 	admin = MyAdmin.objects.get(username="admin")
 	if admin.logged_in:
 		if request.method == 'POST':
-			if request.POST['action'] == "Add Course":	
+			if request.POST['action'] == "Add Course":
 				form = CourseRegister(request.POST, request.FILES)
 				if form.is_valid():
 					course = form.save(commit = True)
@@ -166,25 +166,54 @@ def adminhome(request):
 					ques = RatingQuestion(q=question2, feedback=endsem_feedback)
 					ques.save()
 					course.save()
+					# uploaded_file = request.FILES['file']
+					# print(uploaded_file)
+					# # print ("HI")
+					# # if uploaded_file:
+					# with open("/tmp/%s" %uploaded_file.name, 'wb') as fout:
+					# 	for chunk in uploaded_file.chunks():
+					# 		fout.write(chunk)
+					# reader = csv.reader(open('/tmp/%s' %uploaded_file.name))
+					# for row in reader:
+					# 	s = Student.objects.filter(LDAP = row[0])
+					# 	if s.exists(): 
+					# 		print ("HI")
+					# 		s[0].course.add(course)
+					# 		s[0].save()
+					# 		# else:
+					# 			# print ("Hey")
+					# # else:								
+					# 	# print ("Hey")								
 					return HttpResponseRedirect('/adminhome')
+
 			elif request.POST['action'] == "Upload":
 				form = UploadStudentList(request.POST, request.FILES)
 				if form.is_valid():
 					uploaded_file = request.FILES['file']
+					course = request.POST['course']
+					course = Course.objects.get(id=course)
 					with open("/tmp/%s" %uploaded_file.name, 'wb') as fout:
 						for chunk in uploaded_file.chunks():
 							fout.write(chunk)
 					reader = csv.reader(open('/tmp/%s' %uploaded_file.name))
 					for row in reader:
-						student = Student(LDAP = row[0], name = row[1], password = row[2])
-						student.save()
+						s = Student.objects.filter(LDAP = row[0])
+						if s.exists():
+							# print("HI")
+							s[0].course.add(course)
+							s[0].save()
+						else:
+							# print("Hey")
+							student = Student(LDAP = row[0], name = row[1], password = row[2])
+							student.save()
+							student.course.add(course)
+							student.save()							
 					return HttpResponseRedirect('/adminhome')
-		else:
-			form = CourseRegister()
-			formupload = UploadStudentList()
-			courses = Course.objects.all()
-			c = {'form':form, 'courses': courses, 'formupload': formupload}
-			return render(request, 'admin/adminhome.html', c)
+		form = CourseRegister()
+		formupload = UploadStudentList()
+		courses = Course.objects.all()
+		c = {'form':form, 'courses': courses, 'formupload': formupload}
+		return render(request, 'admin/adminhome.html', c)
 	else:
 		return HttpResponseRedirect('/adminlogin')
 

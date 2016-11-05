@@ -28,8 +28,8 @@ class CreateFeedbackForm(forms.ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(CreateFeedbackForm, self).__init__(*args, **kwargs)
 		self.fields['topic'].widget.attrs={'placeholder': 'Topic'}
-		self.fields['due_date'].widget.attrs={'placeholder': 'DD/MM/YYYY'}
-	question = forms.CharField(max_length=100, label="Question 1", widget=forms.TextInput(attrs={'placeholder': 'Question'}))
+		self.fields['due_date'].widget.attrs={'placeholder': 'YYYY-MM-DD'}
+	# question = forms.CharField(max_length=100, label="Rating Question 1", widget=forms.TextInput(attrs={'placeholder': 'Question', 'class':'form-control'}))
 
 class AdminLogin(forms.Form):
 	username = forms.CharField(label="Username", max_length=30)
@@ -39,6 +39,11 @@ class CourseRegister(forms.ModelForm):
 	class Meta:
 		model = Course
 		fields = ['code', 'name', 'semester', 'instructor', 'midsem_date', 'endsem_date']
+	# file = forms.FileField()
+	def __init__(self, *args, **kwargs):
+		super(CourseRegister, self).__init__(*args, **kwargs)
+		self.fields['midsem_date'].widget.attrs={'placeholder': 'YYYY-MM-DD'}
+		self.fields['endsem_date'].widget.attrs={'placeholder': 'YYYY-MM-DD'}
 
 class CourseAssign(forms.Form):
 	code = forms.CharField(max_length=5)
@@ -48,10 +53,13 @@ class DeadlineForm(forms.ModelForm):
 	class Meta:
 		model = Deadline
 		fields = ['due_date', 'topic', 'description', 'course']
+	def __init__(self, *args, **kwargs):
+		super(DeadlineForm, self).__init__(*args, **kwargs)
+		self.fields['due_date'].widget.attrs={'placeholder': 'YYYY-MM-DD'}
 
 class UploadStudentList(forms.Form):
 	file = forms.FileField()
-	
+	course = forms.ModelChoiceField(queryset=Course.objects.all(), empty_label=None)
 	# def clean(self):
 	# 	file = self.cleaned_data['file']
 	# 	data = csv.reader(file)
